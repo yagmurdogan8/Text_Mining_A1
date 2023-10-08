@@ -1,7 +1,7 @@
 from sklearn.datasets import fetch_20newsgroups
 from sklearn.feature_extraction.text import CountVectorizer
 
-# Tutorial example 4, but in the assignment we are using 20
+# Tutorial example 4, but in the assignment we are using all 20 as question 1 asked to
 # categories = ['alt.atheism', 'soc.religion.christian', 'comp.graphics', 'sci.med']
 
 twenty_train = fetch_20newsgroups(subset='train', categories=None, shuffle=True, random_state=42)
@@ -17,6 +17,8 @@ twenty_train = fetch_20newsgroups(subset='train', categories=None, shuffle=True,
 for t in twenty_train.target[:20]:
     print("Target Name:", twenty_train.target_names[t])
 
+# Text preprocessing, tokenizing and filtering of stopwords are all included in CountVectorizer,
+# which builds a dictionary of features and transforms documents to feature vectors:
 count_vect = CountVectorizer()
 X_train_counts = count_vect.fit_transform(twenty_train.data)
 print(X_train_counts.shape)
