@@ -22,3 +22,7 @@ for t in twenty_train.target[:20]:
 count_vect = CountVectorizer()
 X_train_counts = count_vect.fit_transform(twenty_train.data)
 print(X_train_counts.shape)
+
+# CountVectorizer supports counts of N-grams of words or consecutive characters.
+# Once fitted, the vectorizer has built a dictionary of feature indices:
+print(count_vect.vocabulary_.get(u'algorithm'))
