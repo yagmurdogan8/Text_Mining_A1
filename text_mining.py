@@ -6,7 +6,8 @@ from sklearn.naive_bayes import MultinomialNB
 # Tutorial example 4, but in the assignment we are using all 20 as question 1 asked to
 # categories = ['alt.atheism', 'soc.religion.christian', 'comp.graphics', 'sci.med']
 
-twenty_train = fetch_20newsgroups(subset='train', categories=None, shuffle=True, random_state=42)
+twenty_train = fetch_20newsgroups(subset='train', shuffle=True, random_state=42)
+twenty_test = fetch_20newsgroups(subset='test', shuffle=True, random_state=42)
 
 # the length of the training data can be shown as:
 # print(len(twenty_train.data))
