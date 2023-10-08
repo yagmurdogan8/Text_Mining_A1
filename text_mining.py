@@ -5,3 +5,7 @@ from sklearn.datasets import fetch_20newsgroups
 
 twenty_train = fetch_20newsgroups(subset='train', categories=None, shuffle=True, random_state=42)
 
+# the length of the training data can be shown as:
+# print(len(twenty_train.data))
+
+print("\n".join(twenty_train.data[0].split("\n")[:3]))
