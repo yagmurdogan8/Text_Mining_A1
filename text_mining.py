@@ -1,4 +1,5 @@
 from sklearn.datasets import fetch_20newsgroups
+from sklearn.feature_extraction.text import CountVectorizer
 
 # Tutorial example 4, but in the assignment we are using 20
 # categories = ['alt.atheism', 'soc.religion.christian', 'comp.graphics', 'sci.med']
@@ -15,8 +16,6 @@ twenty_train = fetch_20newsgroups(subset='train', categories=None, shuffle=True,
 
 for t in twenty_train.target[:20]:
     print(twenty_train.target_names[t])
-
-from sklearn.feature_extraction.text import CountVectorizer
 
 count_vect = CountVectorizer()
 X_train_counts = count_vect.fit_transform(twenty_train.data)
