@@ -15,8 +15,8 @@ twenty_train = fetch_20newsgroups(subset='train', categories=None, shuffle=True,
 # print(twenty_train.target[:10])
 
 for t in twenty_train.target[:20]:
-    print(twenty_train.target_names[t])
+    print("Target Name:", twenty_train.target_names[t])
 
 count_vect = CountVectorizer()
 X_train_counts = count_vect.fit_transform(twenty_train.data)
-X_train_counts.shape
+print(X_train_counts.shape)
