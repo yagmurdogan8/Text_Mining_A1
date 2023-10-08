@@ -21,6 +21,8 @@ for t in twenty_train.target[:20]:
 
 # Text preprocessing, tokenizing and filtering of stopwords are all included in CountVectorizer,
 # which builds a dictionary of features and transforms documents to feature vectors:
+# How many words CountVectorizer() does
+
 count_vect = CountVectorizer()
 X_train_counts = count_vect.fit_transform(twenty_train.data)
 print("train counts shape", X_train_counts.shape)
