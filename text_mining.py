@@ -1,5 +1,6 @@
 from sklearn.datasets import fetch_20newsgroups
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer
 
 # Tutorial example 4, but in the assignment we are using all 20 as question 1 asked to
 # categories = ['alt.atheism', 'soc.religion.christian', 'comp.graphics', 'sci.med']
@@ -21,9 +22,13 @@ for t in twenty_train.target[:20]:
 # which builds a dictionary of features and transforms documents to feature vectors:
 count_vect = CountVectorizer()
 X_train_counts = count_vect.fit_transform(twenty_train.data)
-print(X_train_counts.shape)
+print("train counts shape", X_train_counts.shape)
 
 # CountVectorizer supports counts of N-grams of words or consecutive characters.
 # Once fitted, the vectorizer has built a dictionary of feature indices:
-print(count_vect.vocabulary_.get(u'algorithm'))
+print("count vect vocab (u'algorithm')", count_vect.vocabulary_.get(u'algorithm'))
 # The index value of a word in the vocabulary is linked to its frequency in the whole training corpus
+
+tf_transformer = TfidfTransformer(use_idf=False).fit(X_train_counts)
+X_train_tf = tf_transformer.transform(X_train_counts)
+print("train shape", X_train_tf.shape)
