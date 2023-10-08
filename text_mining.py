@@ -7,5 +7,11 @@ twenty_train = fetch_20newsgroups(subset='train', categories=None, shuffle=True,
 
 # the length of the training data can be shown as:
 # print(len(twenty_train.data))
+# Let’s print the first lines of the first loaded file:
+# print("\n".join(twenty_train.data[0].split("\n")[:3]))
+# print(twenty_train.target_names[twenty_train.target[0]])
+#
+# print(twenty_train.target[:10])
 
-print("\n".join(twenty_train.data[0].split("\n")[:3]))
+for t in twenty_train.target[:20]:
+    print(twenty_train.target_names[t])
