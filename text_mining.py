@@ -26,3 +26,4 @@ print(X_train_counts.shape)
 # CountVectorizer supports counts of N-grams of words or consecutive characters.
 # Once fitted, the vectorizer has built a dictionary of feature indices:
 print(count_vect.vocabulary_.get(u'algorithm'))
+# The index value of a word in the vocabulary is linked to its frequency in the whole training corpus
