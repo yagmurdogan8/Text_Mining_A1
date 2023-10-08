@@ -1,6 +1,7 @@
 from sklearn.datasets import fetch_20newsgroups
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.naive_bayes import MultinomialNB
 
 # Tutorial example 4, but in the assignment we are using all 20 as question 1 asked to
 # categories = ['alt.atheism', 'soc.religion.christian', 'comp.graphics', 'sci.med']
@@ -32,3 +33,9 @@ print("count vect vocab (u'algorithm')", count_vect.vocabulary_.get(u'algorithm'
 tf_transformer = TfidfTransformer(use_idf=False).fit(X_train_counts)
 X_train_tf = tf_transformer.transform(X_train_counts)
 print("train shape", X_train_tf.shape)
+
+tfidf_transformer = TfidfTransformer()
+X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
+print("tfidf shape", X_train_tfidf.shape)
+
+clf = MultinomialNB().fit(X_train_tfidf, twenty_train.target)
