@@ -15,3 +15,9 @@ twenty_train = fetch_20newsgroups(subset='train', categories=None, shuffle=True,
 
 for t in twenty_train.target[:20]:
     print(twenty_train.target_names[t])
+
+from sklearn.feature_extraction.text import CountVectorizer
+
+count_vect = CountVectorizer()
+X_train_counts = count_vect.fit_transform(twenty_train.data)
+X_train_counts.shape
