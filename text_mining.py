@@ -54,16 +54,18 @@ X_train_tf = tf_transformer_train.transform(X_train_counts)
 tf_transformer_test = TfidfTransformer(use_idf=False, norm=None).fit(X_test_counts)
 X_test_tf = tf_transformer_test.transform(X_test_counts)
 
-print("train tf shape", X_train_tf.shape)
-print("test tf shape", X_test_tf.shape)
+# print("train tf shape", X_train_tf.shape)
+# print("test tf shape", X_test_tf.shape)
 
 # Naive Bayes tf
 tf_clf = MultinomialNB().fit(X_train_counts, twenty_train.target)
+tf_predicted = tf_clf.predict(X_train_counts)
 
 # TFID is the words appears most in text
 tfidf_transformer = TfidfTransformer()
 X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
-print("tfidf shape", X_train_tfidf.shape)
+
+# print("tfidf shape", X_train_tfidf.shape)
 
 # Naive Bayes tfidf
 tfidf_clf = MultinomialNB().fit(X_train_tfidf, twenty_train.target)
