@@ -1,6 +1,6 @@
 from sklearn.datasets import fetch_20newsgroups  # to import the newsgroup data directly from internet
-# We could also download the dataset file extract it and use it with scikitlearn's load_files att.
-
+# We could also download the dataset file extract it and use it with scikitlearn's load_files att. instead of importing
+# directly from the internet
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
