@@ -4,10 +4,11 @@ from sklearn.datasets import fetch_20newsgroups  # to import the newsgroup data 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.metrics import accuracy_score  # to compare tf and tfidf's accuracies
-from sklearn.svm import LinearSVC  # Support vector machines
+# from sklearn.metrics import accuracy_score  # to compare tf and tfidf's accuracies
+# from sklearn.svm import LinearSVC  # Support vector machines
 import numpy as np
 from sklearn.pipeline import Pipeline
+from sklearn.linear_model import SGDClassifier
 
 # Tutorial example 4, but in the assignment we are using all 20 as question 1 asked to
 # categories = ['alt.atheism', 'soc.religion.christian', 'comp.graphics', 'sci.med']
@@ -43,7 +44,6 @@ X_test_counts = count_vect.fit_transform(twenty_test.data)
 print("train counts shape", X_train_counts.shape)
 print("test counts shape", X_test_counts.shape)
 
-
 # CountVectorizer supports counts of N-grams of words or consecutive characters.
 # Once fitted, the vectorizer has built a dictionary of feature indices:
 print("count vect vocab (u'algorithm')", count_vect.vocabulary_.get(u'algorithm'))
@@ -60,24 +60,29 @@ X_test_tf = tf_transformer_test.transform(X_test_counts)
 # print("train tf shape", X_train_tf.shape)
 # print("test tf shape", X_test_tf.shape)
 
-# Naive Bayes tf
-tf_clf = MultinomialNB().fit(X_train_counts, twenty_train.target)
-tf_predicted = tf_clf.predict(X_train_counts)
-
-print("Accuracy score of tf (Naive Bayes): ", accuracy_score(twenty_train.target, tf_predicted))
-
-# TFID is the words appears most in text
-tfidf_transformer = TfidfTransformer()
-X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
-
-# print("tfidf shape", X_train_tfidf.shape)
-
-# Naive Bayes tfidf
-tfidf_clf = MultinomialNB().fit(X_train_tfidf, twenty_train.target)
-tfidf_predicted = tfidf_clf.predict(X_train_tfidf)
-
-print("Accuracy score of tfidf (Naive Bayes): ", accuracy_score(twenty_train.target, tfidf_predicted))
-
+# Naive Bayes
+text_clf = Pipeline([('vect', CountVectorizer()),
+                     ('tfidf', TfidfTransformer()),
+                     ('clf', MultinomialNB())])
+text_clf.fit(twenty_train.data, twenty_train.target)
+#
+# # Naive Bayes tf
+# tf_clf = MultinomialNB().fit(X_train_counts, twenty_train.target)
+# tf_predicted = tf_clf.predict(X_train_counts)
+#
+# print("Accuracy score of tf (Naive Bayes): ", accuracy_score(twenty_train.target, tf_predicted))
+#
+# # TFID is the words appears most in text
+# tfidf_transformer = TfidfTransformer()
+# X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
+#
+# # print("tfidf shape", X_train_tfidf.shape)
+#
+# # Naive Bayes tfidf
+# tfidf_clf = MultinomialNB().fit(X_train_tfidf, twenty_train.target)
+# tfidf_predicted = tfidf_clf.predict(X_train_tfidf)
+#
+# print("Accuracy score of tfidf (Naive Bayes): ", accuracy_score(twenty_train.target, tfidf_predicted))
 # # Support Vector Machines
 # tf_clf = LinearSVC.SVC(kernel='linear', random_state=42)
 # svm_tf_predicted = tf_clf.predict(X_train_counts)
@@ -89,11 +94,14 @@ print("Accuracy score of tfidf (Naive Bayes): ", accuracy_score(twenty_train.tar
 #
 # print("Accuracy score of tfidf (SVM):", accuracy_score(twenty_train.target, svm_tfidf_predicted))
 
-
-text_clf = Pipeline([('vect', CountVectorizer()), ('tfidf', TfidfTransformer()), ('clf', MultinomialNB())])
-
-text_clf.fit(twenty_train.data, twenty_train.target)
-Pipeline(...)
-
+# SGDC
 predicted = text_clf.predict(twenty_test.data)
-print(np.mean(predicted == twenty_test.target))
+print("Accuracy score of Naive Bayes:", np.mean(predicted == twenty_test.target))
+
+text_clf = Pipeline([('vect', CountVectorizer()),
+                     ('tfidf', TfidfTransformer()),
+                     ('clf', SGDClassifier(loss='hinge', penalty='l2', alpha=1e-3,
+                                           random_state=42, max_iter=5, tol=None))])
+text_clf.fit(twenty_train.data, twenty_train.target)
+predicted = text_clf.predict(twenty_test.data)
+print("Accuracy score of SGDC:", np.mean(predicted == twenty_test.target))
