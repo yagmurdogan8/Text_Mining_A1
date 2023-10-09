@@ -13,6 +13,8 @@ from sklearn.naive_bayes import MultinomialNB
 twenty_train = fetch_20newsgroups(subset='train', shuffle=True, random_state=42)
 twenty_test = fetch_20newsgroups(subset='test', shuffle=True, random_state=42)
 
+# twenty_train and twenty_test data are stored as dictionary objects.
+
 # the length of the training data can be shown as:
 # print(len(twenty_train.data))
 # Let’s print the first lines of the first loaded file:
