@@ -42,10 +42,12 @@ print("train counts shape", X_train_counts.shape)
 print("count vect vocab (u'algorithm')", count_vect.vocabulary_.get(u'algorithm'))
 # The index value of a word in the vocabulary is linked to its frequency in the whole training corpus
 
-tf_transformer = TfidfTransformer(use_idf=False).fit(X_train_counts)
+# Codelet below is the Term Frequency (tf). TF is the frequency of a given word in the text
+tf_transformer = TfidfTransformer(use_idf=False, norm=None).fit(X_train_counts)  # idf is false to disable idf feat.
 X_train_tf = tf_transformer.transform(X_train_counts)
-print("train shape", X_train_tf.shape)
+print("tf shape", X_train_tf.shape)
 
+# TFID is the words appears most in text
 tfidf_transformer = TfidfTransformer()
 X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
 print("tfidf shape", X_train_tfidf.shape)
