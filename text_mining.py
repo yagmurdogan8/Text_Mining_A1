@@ -4,7 +4,7 @@ from sklearn.datasets import fetch_20newsgroups  # to import the newsgroup data 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
-
+from sklearn.metrics import accuracy_score
 
 # Tutorial example 4, but in the assignment we are using all 20 as question 1 asked to
 # categories = ['alt.atheism', 'soc.religion.christian', 'comp.graphics', 'sci.med']
@@ -40,6 +40,7 @@ X_test_counts = count_vect.fit_transform(twenty_test.data)
 print("train counts shape", X_train_counts.shape)
 print("test counts shape", X_test_counts.shape)
 
+
 # CountVectorizer supports counts of N-grams of words or consecutive characters.
 # Once fitted, the vectorizer has built a dictionary of feature indices:
 print("count vect vocab (u'algorithm')", count_vect.vocabulary_.get(u'algorithm'))
@@ -61,4 +62,5 @@ tfidf_transformer = TfidfTransformer()
 X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
 print("tfidf shape", X_train_tfidf.shape)
 
+# Naive Bayes applied below
 clf = MultinomialNB().fit(X_train_tfidf, twenty_train.target)
