@@ -1,10 +1,13 @@
-from sklearn.datasets import fetch_20newsgroups
+from sklearn.datasets import fetch_20newsgroups  # to import the newsgroup data directly from internet
+# We could also download the dataset file extract it and use it with scikitlearn's load_files att.
+
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 
 # Tutorial example 4, but in the assignment we are using all 20 as question 1 asked to
 # categories = ['alt.atheism', 'soc.religion.christian', 'comp.graphics', 'sci.med']
+
 # Below we are getting the newsgroup data directly from internet using scikitlearn
 
 twenty_train = fetch_20newsgroups(subset='train', shuffle=True, random_state=42)
