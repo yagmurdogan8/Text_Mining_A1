@@ -61,6 +61,8 @@ X_test_tf = tf_transformer_test.transform(X_test_counts)
 tf_clf = MultinomialNB().fit(X_train_counts, twenty_train.target)
 tf_predicted = tf_clf.predict(X_train_counts)
 
+print("Accuracy score of tf: ", accuracy_score(twenty_train.target, tf_predicted))
+
 # TFID is the words appears most in text
 tfidf_transformer = TfidfTransformer()
 X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
@@ -69,4 +71,6 @@ X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
 
 # Naive Bayes tfidf
 tfidf_clf = MultinomialNB().fit(X_train_tfidf, twenty_train.target)
+tfidf_predicted = tfidf_clf.predict(X_train_tfidf)
 
+print("Accuracy score of tfidf: ", accuracy_score(twenty_train.target, tfidf_predicted))
