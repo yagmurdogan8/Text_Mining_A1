@@ -4,8 +4,9 @@ from sklearn.datasets import fetch_20newsgroups  # to import the newsgroup data 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.tree import DecisionTreeClassifier
 # from sklearn.metrics import accuracy_score  # to compare tf and tfidf's accuracies
-# from sklearn.svm import LinearSVC  # Support vector machines
+from sklearn.svm import LinearSVC  # Support vector machines
 import numpy as np
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import SGDClassifier
@@ -57,14 +58,11 @@ X_train_tf = tf_transformer_train.transform(X_train_counts)
 tf_transformer_test = TfidfTransformer(use_idf=False, norm=None).fit(X_test_counts)
 X_test_tf = tf_transformer_test.transform(X_test_counts)
 
-# print("train tf shape", X_train_tf.shape)
-# print("test tf shape", X_test_tf.shape)
-
 # Naive Bayes
-text_clf = Pipeline([('vect', CountVectorizer()),
+naive_pipeline = Pipeline([('vect', CountVectorizer()),
                      ('tfidf', TfidfTransformer()),
                      ('clf', MultinomialNB())])
-text_clf.fit(twenty_train.data, twenty_train.target)
+naive_pipeline.fit(twenty_train.data, twenty_train.target)
 #
 # # Naive Bayes tf
 # tf_clf = MultinomialNB().fit(X_train_counts, twenty_train.target)
@@ -93,15 +91,23 @@ text_clf.fit(twenty_train.data, twenty_train.target)
 # svm_tfidf_predicted = tfidf_clf.predic(X_train_tfidf)
 #
 # print("Accuracy score of tfidf (SVM):", accuracy_score(twenty_train.target, svm_tfidf_predicted))
+naive_predicted = naive_pipeline.predict(twenty_test.data)
+print("Accuracy score of Naive Bayes:", np.mean(naive_predicted == twenty_test.target))
 
-# SGDC
-predicted = text_clf.predict(twenty_test.data)
-print("Accuracy score of Naive Bayes:", np.mean(predicted == twenty_test.target))
-
-text_clf = Pipeline([('vect', CountVectorizer()),
+# Stochastic Gradient Descent Classifier
+sgdc_pipeline = Pipeline([('vect', CountVectorizer()),
                      ('tfidf', TfidfTransformer()),
                      ('clf', SGDClassifier(loss='hinge', penalty='l2', alpha=1e-3,
                                            random_state=42, max_iter=5, tol=None))])
-text_clf.fit(twenty_train.data, twenty_train.target)
-predicted = text_clf.predict(twenty_test.data)
-print("Accuracy score of SGDC:", np.mean(predicted == twenty_test.target))
+sgdc_pipeline.fit(twenty_train.data, twenty_train.target)
+sgdc_predicted = sgdc_pipeline.predict(twenty_test.data)
+print("Accuracy score of SGDC:", np.mean(sgdc_predicted == twenty_test.target))
+
+# Decision Tree Classifier
+svc_pipeline = Pipeline([('vect', CountVectorizer()),
+                     ('tfidf', TfidfTransformer()),
+                     ("clf", LinearSVC())])
+svc_pipeline.fit(twenty_train.data, twenty_train.target)
+svc_predicted = svc_pipeline.predict(twenty_test.data)
+print("Accuracy score of SVC:", np.mean(svc_predicted == twenty_test.target))
+
