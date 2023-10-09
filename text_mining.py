@@ -57,10 +57,14 @@ X_test_tf = tf_transformer_test.transform(X_test_counts)
 print("train tf shape", X_train_tf.shape)
 print("test tf shape", X_test_tf.shape)
 
+# Naive Bayes tf
+tf_clf = MultinomialNB().fit(X_train_counts, twenty_train.target)
+
 # TFID is the words appears most in text
 tfidf_transformer = TfidfTransformer()
 X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
 print("tfidf shape", X_train_tfidf.shape)
 
-# Naive Bayes applied below
-clf = MultinomialNB().fit(X_train_tfidf, twenty_train.target)
+# Naive Bayes tfidf
+tfidf_clf = MultinomialNB().fit(X_train_tfidf, twenty_train.target)
+
