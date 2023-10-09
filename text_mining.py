@@ -6,6 +6,8 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score  # to compare tf and tfidf's accuracies
 from sklearn.svm import LinearSVC  # Support vector machines
+import numpy as np
+from sklearn.pipeline import Pipeline
 
 # Tutorial example 4, but in the assignment we are using all 20 as question 1 asked to
 # categories = ['alt.atheism', 'soc.religion.christian', 'comp.graphics', 'sci.med']
@@ -62,7 +64,7 @@ X_test_tf = tf_transformer_test.transform(X_test_counts)
 tf_clf = MultinomialNB().fit(X_train_counts, twenty_train.target)
 tf_predicted = tf_clf.predict(X_train_counts)
 
-print("Accuracy score of tf: ", accuracy_score(twenty_train.target, tf_predicted))
+print("Accuracy score of tf (Naive Bayes): ", accuracy_score(twenty_train.target, tf_predicted))
 
 # TFID is the words appears most in text
 tfidf_transformer = TfidfTransformer()
@@ -74,4 +76,24 @@ X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
 tfidf_clf = MultinomialNB().fit(X_train_tfidf, twenty_train.target)
 tfidf_predicted = tfidf_clf.predict(X_train_tfidf)
 
-print("Accuracy score of tfidf: ", accuracy_score(twenty_train.target, tfidf_predicted))
+print("Accuracy score of tfidf (Naive Bayes): ", accuracy_score(twenty_train.target, tfidf_predicted))
+
+# # Support Vector Machines
+# tf_clf = LinearSVC.SVC(kernel='linear', random_state=42)
+# svm_tf_predicted = tf_clf.predict(X_train_counts)
+#
+# print("Accuracy score of tf (SVM):", accuracy_score(twenty_train.target, svm_tf_predicted))
+#
+# tfidf_clf = LinearSVC.SVC(kernel='linear', random_state=42)
+# svm_tfidf_predicted = tfidf_clf.predic(X_train_tfidf)
+#
+# print("Accuracy score of tfidf (SVM):", accuracy_score(twenty_train.target, svm_tfidf_predicted))
+
+
+text_clf = Pipeline([('vect', CountVectorizer()), ('tfidf', TfidfTransformer()), ('clf', MultinomialNB())])
+
+text_clf.fit(twenty_train.data, twenty_train.target)
+Pipeline(...)
+
+predicted = text_clf.predict(twenty_test.data)
+print(np.mean(predicted == twenty_test.target))
