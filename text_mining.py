@@ -5,6 +5,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 
+
 # Tutorial example 4, but in the assignment we are using all 20 as question 1 asked to
 # categories = ['alt.atheism', 'soc.religion.christian', 'comp.graphics', 'sci.med']
 
@@ -35,7 +36,9 @@ for t in twenty_train.target[:20]:
 
 count_vect = CountVectorizer()
 X_train_counts = count_vect.fit_transform(twenty_train.data)
+X_test_counts = count_vect.fit_transform(twenty_test.data)
 print("train counts shape", X_train_counts.shape)
+print("test counts shape", X_test_counts.shape)
 
 # CountVectorizer supports counts of N-grams of words or consecutive characters.
 # Once fitted, the vectorizer has built a dictionary of feature indices:
@@ -43,9 +46,15 @@ print("count vect vocab (u'algorithm')", count_vect.vocabulary_.get(u'algorithm'
 # The index value of a word in the vocabulary is linked to its frequency in the whole training corpus
 
 # Codelet below is the Term Frequency (tf). TF is the frequency of a given word in the text
-tf_transformer = TfidfTransformer(use_idf=False, norm=None).fit(X_train_counts)  # idf is false to disable idf feat.
-X_train_tf = tf_transformer.transform(X_train_counts)
-print("tf shape", X_train_tf.shape)
+# idf is false to disable idf feat.
+tf_transformer_train = TfidfTransformer(use_idf=False, norm=None).fit(X_train_counts)
+X_train_tf = tf_transformer_train.transform(X_train_counts)
+
+tf_transformer_test = TfidfTransformer(use_idf=False, norm=None).fit(X_test_counts)
+X_test_tf = tf_transformer_test.transform(X_test_counts)
+
+print("train tf shape", X_train_tf.shape)
+print("test tf shape", X_test_tf.shape)
 
 # TFID is the words appears most in text
 tfidf_transformer = TfidfTransformer()
