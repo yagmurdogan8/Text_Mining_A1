@@ -14,6 +14,7 @@ twenty_train = fetch_20newsgroups(subset='train', shuffle=True, random_state=42)
 twenty_test = fetch_20newsgroups(subset='test', shuffle=True, random_state=42)
 
 print(twenty_train.keys())  # we can see the keys of the dictionary
+print(twenty_test.keys())  # same as above
 
 # twenty_train and twenty_test data are stored as dictionary objects.
 
