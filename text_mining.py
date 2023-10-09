@@ -13,6 +13,8 @@ from sklearn.naive_bayes import MultinomialNB
 twenty_train = fetch_20newsgroups(subset='train', shuffle=True, random_state=42)
 twenty_test = fetch_20newsgroups(subset='test', shuffle=True, random_state=42)
 
+print(twenty_train.keys())  # we can see the keys of the dictionary
+
 # twenty_train and twenty_test data are stored as dictionary objects.
 
 # the length of the training data can be shown as:
@@ -28,7 +30,7 @@ for t in twenty_train.target[:20]:
 
 # Text preprocessing, tokenizing and filtering of stopwords are all included in CountVectorizer,
 # which builds a dictionary of features and transforms documents to feature vectors:
-# How many words CountVectorizer() does
+# How many words (CountVectorizer() does)
 
 count_vect = CountVectorizer()
 X_train_counts = count_vect.fit_transform(twenty_train.data)
