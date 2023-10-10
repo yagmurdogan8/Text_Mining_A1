@@ -1,3 +1,4 @@
+from sklearn import metrics
 from sklearn.datasets import fetch_20newsgroups  # to import the newsgroup data directly from internet
 # We could also download the dataset file extract it and use it with scikitlearn's load_files att. instead of importing
 # directly from the internet
@@ -56,28 +57,37 @@ X_train_tf = tf_transformer_train.transform(X_train_counts)
 tf_transformer_test = TfidfTransformer(use_idf=False, norm=None).fit(X_test_counts)
 X_test_tf = tf_transformer_test.transform(X_test_counts)
 
+print("------------------------------------------------------")
+print("The Classification Algorithms & Their Accuracy Scores:")
 # Naive Bayes
 naive_pipeline = Pipeline([('vect', CountVectorizer()),
-                     ('tfidf', TfidfTransformer()),
-                     ('clf', MultinomialNB())])
+                           ('tfidf', TfidfTransformer()),
+                           ('clf', MultinomialNB())])
 naive_pipeline.fit(twenty_train.data, twenty_train.target)
 naive_predicted = naive_pipeline.predict(twenty_train.data)
 print("Accuracy score of Naive Bayes:", accuracy_score(twenty_train.target, naive_predicted))
 
+print(metrics.classification_report(twenty_train.target, naive_predicted, target_names=twenty_train.target_names))
+print("------------------------------------------------------")
+
 # Stochastic Gradient Descent Classifier
 sgdc_pipeline = Pipeline([('vect', CountVectorizer()),
-                     ('tfidf', TfidfTransformer()),
-                     ('clf', SGDClassifier(loss='hinge', penalty='l2', alpha=1e-3,
-                                           random_state=42, max_iter=5, tol=None))])
+                          ('tfidf', TfidfTransformer()),
+                          ('clf', SGDClassifier(loss='hinge', penalty='l2', alpha=1e-3,
+                                                random_state=42, max_iter=5, tol=None))])
 sgdc_pipeline.fit(twenty_train.data, twenty_train.target)
-sgdc_predicted = sgdc_pipeline.predict(twenty_train.data)
+sgdc_predicted = sgdc_pipeline.predict(twenty_test.data)
 print("Accuracy score of SGDC:", accuracy_score(twenty_train.target, sgdc_predicted))
+
+print(metrics.classification_report(twenty_train.target, sgdc_predicted, target_names=twenty_train.target_names))
+print("------------------------------------------------------")
 
 # Decision Tree Classifier
 dtc_pipeline = Pipeline([('vect', CountVectorizer()),
-                     ('tfidf', TfidfTransformer()),
-                     ("clf", DecisionTreeClassifier())])
+                         ('tfidf', TfidfTransformer()),
+                         ("clf", DecisionTreeClassifier())])
 dtc_pipeline.fit(twenty_train.data, twenty_train.target)
 dtc_predicted = dtc_pipeline.predict(twenty_train.data)
 print("Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
 
+print(metrics.classification_report(twenty_train.target, dtc_predicted, target_names=twenty_train.target_names))
