@@ -29,9 +29,9 @@ twenty_test = fetch_20newsgroups(subset='test', shuffle=True, random_state=42)
 # print(twenty_train.target_names[twenty_train.target[0]])
 # print(twenty_train.target[:10])
 
-# # names of the categories
-# for t in twenty_train.target[:20]:
-#     print("Target Name:", twenty_train.target_names[t])
+# names of the categories
+for t in twenty_train.target[:20]:
+    print("Target Name:", twenty_train.target_names[t])
 
 # Text preprocessing, tokenizing and filtering of stopwords are all included in CountVectorizer,
 # which builds a dictionary of features and transforms documents to feature vectors:
@@ -61,7 +61,7 @@ naive_pipeline = Pipeline([('vect', CountVectorizer()),
                      ('tfidf', TfidfTransformer()),
                      ('clf', MultinomialNB())])
 naive_pipeline.fit(twenty_train.data, twenty_train.target)
-naive_predicted = naive_pipeline.predict(twenty_test.data)
+naive_predicted = naive_pipeline.predict(twenty_train.data)
 print("Accuracy score of Naive Bayes:", accuracy_score(twenty_train.target, naive_predicted))
 
 # Stochastic Gradient Descent Classifier
@@ -70,7 +70,7 @@ sgdc_pipeline = Pipeline([('vect', CountVectorizer()),
                      ('clf', SGDClassifier(loss='hinge', penalty='l2', alpha=1e-3,
                                            random_state=42, max_iter=5, tol=None))])
 sgdc_pipeline.fit(twenty_train.data, twenty_train.target)
-sgdc_predicted = sgdc_pipeline.predict(twenty_test.data)
+sgdc_predicted = sgdc_pipeline.predict(twenty_train.data)
 print("Accuracy score of SGDC:", accuracy_score(twenty_train.target, sgdc_predicted))
 
 # Decision Tree Classifier
@@ -78,6 +78,6 @@ dtc_pipeline = Pipeline([('vect', CountVectorizer()),
                      ('tfidf', TfidfTransformer()),
                      ("clf", DecisionTreeClassifier())])
 dtc_pipeline.fit(twenty_train.data, twenty_train.target)
-dtc_predicted = dtc_pipeline.predict(twenty_test.data)
+dtc_predicted = dtc_pipeline.predict(twenty_train.data)
 print("Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
 
