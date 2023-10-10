@@ -118,12 +118,38 @@ print("Not lowercased Accuracy score of DTC:", accuracy_score(twenty_train.targe
 
 print("------------------------------------------------------")
 
-# Stop- words : We can either create a list of stop words ourselves or just import sklearn's english stop words lib
+# Stop- words : We can either create a list of stop words ourselves or import sklearn's english stop words lib
 # We are going to use second method
 
-dtc_pipeline = Pipeline([('vect', CountVectorizer(stop_words=ENGLISH_STOP_WORDS)),
+dtc_pipeline = Pipeline([('vect', CountVectorizer(stop_words={'english'})),
                          ('tfidf', TfidfTransformer()),
                          ("clf", DecisionTreeClassifier())])
 dtc_pipeline.fit(twenty_train.data, twenty_train.target)
 dtc_predicted = dtc_pipeline.predict(twenty_train.data)
 print("With stop words Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
+
+print("------------------------------------------------------")
+
+# Ngram_range : We are going to use (1,1) unigram comp. (1,2) unigram and bigram and (1,3) unigram and trigram
+
+dtc_pipeline = Pipeline([('vect', CountVectorizer(ngram_range=(1, 1))),
+                         ('tfidf', TfidfTransformer()),
+                         ("clf", DecisionTreeClassifier())])
+dtc_pipeline.fit(twenty_train.data, twenty_train.target)
+dtc_predicted = dtc_pipeline.predict(twenty_train.data)
+print("Unigram Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
+
+dtc_pipeline = Pipeline([('vect', CountVectorizer(ngram_range=(1, 2))),
+                         ('tfidf', TfidfTransformer()),
+                         ("clf", DecisionTreeClassifier())])
+dtc_pipeline.fit(twenty_train.data, twenty_train.target)
+dtc_predicted = dtc_pipeline.predict(twenty_train.data)
+print("Unigram and bigram Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
+
+dtc_pipeline = Pipeline([('vect', CountVectorizer(ngram_range=(1, 3))),
+                         ('tfidf', TfidfTransformer()),
+                         ("clf", DecisionTreeClassifier())])
+dtc_pipeline.fit(twenty_train.data, twenty_train.target)
+dtc_predicted = dtc_pipeline.predict(twenty_train.data)
+print("Unigram and trigram Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
+
