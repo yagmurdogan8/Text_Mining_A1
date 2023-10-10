@@ -5,9 +5,8 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.tree import DecisionTreeClassifier
-# from sklearn.metrics import accuracy_score  # to compare tf and tfidf's accuracies
+from sklearn.metrics import accuracy_score  # to compare tf and tfidf's accuracies
 from sklearn.svm import LinearSVC  # Support vector machines
-import numpy as np
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import SGDClassifier
 
@@ -19,8 +18,8 @@ from sklearn.linear_model import SGDClassifier
 twenty_train = fetch_20newsgroups(subset='train', shuffle=True, random_state=42)
 twenty_test = fetch_20newsgroups(subset='test', shuffle=True, random_state=42)
 
-print(twenty_train.keys())  # we can see the keys of the dictionary
-print(twenty_test.keys())  # same as above
+# print(twenty_train.keys())  # we can see the keys of the dictionary
+# print(twenty_test.keys())  # same as above
 
 # twenty_train and twenty_test data are stored as dictionary objects.
 
@@ -32,8 +31,9 @@ print(twenty_test.keys())  # same as above
 #
 # print(twenty_train.target[:10])
 
-for t in twenty_train.target[:20]:
-    print("Target Name:", twenty_train.target_names[t])
+# # names of the categories
+# for t in twenty_train.target[:20]:
+#     print("Target Name:", twenty_train.target_names[t])
 
 # Text preprocessing, tokenizing and filtering of stopwords are all included in CountVectorizer,
 # which builds a dictionary of features and transforms documents to feature vectors:
@@ -42,12 +42,12 @@ for t in twenty_train.target[:20]:
 count_vect = CountVectorizer()
 X_train_counts = count_vect.fit_transform(twenty_train.data)
 X_test_counts = count_vect.fit_transform(twenty_test.data)
-print("train counts shape", X_train_counts.shape)
-print("test counts shape", X_test_counts.shape)
+# print("train counts shape", X_train_counts.shape)
+# print("test counts shape", X_test_counts.shape)
 
 # CountVectorizer supports counts of N-grams of words or consecutive characters.
 # Once fitted, the vectorizer has built a dictionary of feature indices:
-print("count vect vocab (u'algorithm')", count_vect.vocabulary_.get(u'algorithm'))
+# print("count vect vocab (u'algorithm')", count_vect.vocabulary_.get(u'algorithm'))
 # The index value of a word in the vocabulary is linked to its frequency in the whole training corpus
 
 # Codelet below is the Term Frequency (tf). TF is the frequency of a given word in the text
