@@ -76,7 +76,7 @@ sgdc_pipeline = Pipeline([('vect', CountVectorizer()),
                           ('clf', SGDClassifier(loss='hinge', penalty='l2', alpha=1e-3,
                                                 random_state=42, max_iter=5, tol=None))])
 sgdc_pipeline.fit(twenty_train.data, twenty_train.target)
-sgdc_predicted = sgdc_pipeline.predict(twenty_test.data)
+sgdc_predicted = sgdc_pipeline.predict(twenty_train.data)
 print("Accuracy score of SGDC:", accuracy_score(twenty_train.target, sgdc_predicted))
 
 print(metrics.classification_report(twenty_train.target, sgdc_predicted, target_names=twenty_train.target_names))
