@@ -1,6 +1,5 @@
 from sklearn import metrics
 from sklearn.datasets import fetch_20newsgroups  # to import the newsgroup data directly from internet
-from sklearn.feature_extraction._stop_words import ENGLISH_STOP_WORDS
 # We could also download the dataset file extract it and use it with scikitlearn's load_files att. instead of importing
 # directly from the internet
 from sklearn.feature_extraction.text import CountVectorizer
@@ -8,7 +7,7 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import SGDClassifier
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score, classification_report  # to compare the accuracies
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from sklearn.pipeline import Pipeline
 
 # Tutorial example 4, but in the assignment we are using all 20 as question 1 asked to
@@ -60,7 +59,6 @@ X_test_counts = count_vect.fit_transform(twenty_test.data)
 
 print("------------------------------------------------------")
 print("The Classification Algorithms & Their Accuracy Scores:")
-
 # Naive Bayes
 naive_pipeline = Pipeline([('vect', CountVectorizer()),
                            ('tfidf', TfidfTransformer()),
@@ -69,12 +67,7 @@ naive_pipeline.fit(twenty_train.data, twenty_train.target)
 naive_predicted = naive_pipeline.predict(twenty_train.data)
 print("Accuracy score of Naive Bayes:", accuracy_score(twenty_train.target, naive_predicted))
 
-report = classification_report(twenty_test.target, naive_predicted, target_names=twenty_test.target_names)
-
-# Print or display the classification report
-print("Classification Report for Naive Bayes:")
-print(report)
-
+print(metrics.classification_report(twenty_train.target, naive_predicted, target_names=twenty_train.target_names))
 print("------------------------------------------------------")
 
 # Stochastic Gradient Descent Classifier
@@ -86,12 +79,7 @@ sgdc_pipeline.fit(twenty_train.data, twenty_train.target)
 sgdc_predicted = sgdc_pipeline.predict(twenty_train.data)
 print("Accuracy score of SGDC:", accuracy_score(twenty_train.target, sgdc_predicted))
 
-report = classification_report(twenty_test.target, sgdc_predicted, target_names=twenty_test.target_names)
-
-# Print or display the classification report
-print("Classification Report for SGDC:")
-print(report)
-# print(metrics.classification_report(twenty_train.target, sgdc_predicted, target_names=twenty_train.target_names))
+print(metrics.classification_report(twenty_train.target, sgdc_predicted, target_names=twenty_train.target_names))
 print("------------------------------------------------------")
 
 # Decision Tree Classifier
@@ -102,12 +90,7 @@ dtc_pipeline.fit(twenty_train.data, twenty_train.target)
 dtc_predicted = dtc_pipeline.predict(twenty_train.data)
 print("Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
 
-report = classification_report(twenty_test.target, dtc_predicted, target_names=twenty_test.target_names)
-
-# Print or display the classification report
-print("Classification Report for DTC:")
-print(report)
-# print(metrics.classification_report(twenty_train.target, dtc_predicted, target_names=twenty_train.target_names))
+print(metrics.classification_report(twenty_train.target, dtc_predicted, target_names=twenty_train.target_names))
 
 print("------------------------------------------------------")
 
