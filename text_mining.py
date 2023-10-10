@@ -7,7 +7,7 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import SGDClassifier
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score  # to compare tf and tfidf's accuracies
+from sklearn.metrics import accuracy_score  # to compare the accuracies
 from sklearn.pipeline import Pipeline
 
 # Tutorial example 4, but in the assignment we are using all 20 as question 1 asked to
@@ -51,11 +51,11 @@ X_test_counts = count_vect.fit_transform(twenty_test.data)
 
 # Codelet below is the Term Frequency (tf). TF is the frequency of a given word in the text
 # idf is false to disable idf feature
-tf_transformer_train = TfidfTransformer(use_idf=False, norm=None).fit(X_train_counts)
-X_train_tf = tf_transformer_train.transform(X_train_counts)
-
-tf_transformer_test = TfidfTransformer(use_idf=False, norm=None).fit(X_test_counts)
-X_test_tf = tf_transformer_test.transform(X_test_counts)
+# tf_transformer_train = TfidfTransformer(use_idf=False, norm=None).fit(X_train_counts)
+# X_train_tf = tf_transformer_train.transform(X_train_counts)
+#
+# tf_transformer_test = TfidfTransformer(use_idf=False, norm=None).fit(X_test_counts)
+# X_test_tf = tf_transformer_test.transform(X_test_counts)
 
 print("------------------------------------------------------")
 print("The Classification Algorithms & Their Accuracy Scores:")
@@ -91,3 +91,10 @@ dtc_predicted = dtc_pipeline.predict(twenty_train.data)
 print("Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
 
 print(metrics.classification_report(twenty_train.target, dtc_predicted, target_names=twenty_train.target_names))
+
+print("------------------------------------------------------")
+
+# The best combination of classifiers and features is tdidf with dtc so from now on we will be investigating those for
+# the question 4.
+
+
