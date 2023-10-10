@@ -1,5 +1,6 @@
 from sklearn import metrics
 from sklearn.datasets import fetch_20newsgroups  # to import the newsgroup data directly from internet
+from sklearn.feature_extraction._stop_words import ENGLISH_STOP_WORDS
 # We could also download the dataset file extract it and use it with scikitlearn's load_files att. instead of importing
 # directly from the internet
 from sklearn.feature_extraction.text import CountVectorizer
@@ -94,7 +95,35 @@ print(metrics.classification_report(twenty_train.target, dtc_predicted, target_n
 
 print("------------------------------------------------------")
 
-# The best combination of classifiers and features is tdidf with dtc so from now on we will be investigating those for
-# the question 4.
+# The best combination of classifiers and features is countvectorizer with dtc so from now on we will be
+# investigating those for the question 4.
+
+# Lowercase : just adding lowercase=True (default) makes the text converted to lowercase. So, let us just add
+# lowercase=false for seeing the difference
+
+dtc_pipeline = Pipeline([('vect', CountVectorizer(lowercase=True)),
+                         ('tfidf', TfidfTransformer()),
+                         ("clf", DecisionTreeClassifier())])
+dtc_pipeline.fit(twenty_train.data, twenty_train.target)
+dtc_predicted = dtc_pipeline.predict(twenty_train.data)
+print("Lowercased Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
 
 
+dtc_pipeline = Pipeline([('vect', CountVectorizer(lowercase=False)),
+                         ('tfidf', TfidfTransformer()),
+                         ("clf", DecisionTreeClassifier())])
+dtc_pipeline.fit(twenty_train.data, twenty_train.target)
+dtc_predicted = dtc_pipeline.predict(twenty_train.data)
+print("Not lowercased Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
+
+print("------------------------------------------------------")
+
+# Stop- words : We can either create a list of stop words ourselves or just import sklearn's english stop words lib
+# We are going to use second method
+
+dtc_pipeline = Pipeline([('vect', CountVectorizer(stop_words=ENGLISH_STOP_WORDS)),
+                         ('tfidf', TfidfTransformer()),
+                         ("clf", DecisionTreeClassifier())])
+dtc_pipeline.fit(twenty_train.data, twenty_train.target)
+dtc_predicted = dtc_pipeline.predict(twenty_train.data)
+print("With stop words Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
