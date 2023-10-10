@@ -8,7 +8,7 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import SGDClassifier
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score  # to compare the accuracies
+from sklearn.metrics import accuracy_score, classification_report  # to compare the accuracies
 from sklearn.pipeline import Pipeline
 
 # Tutorial example 4, but in the assignment we are using all 20 as question 1 asked to
@@ -60,6 +60,7 @@ X_test_counts = count_vect.fit_transform(twenty_test.data)
 
 print("------------------------------------------------------")
 print("The Classification Algorithms & Their Accuracy Scores:")
+
 # Naive Bayes
 naive_pipeline = Pipeline([('vect', CountVectorizer()),
                            ('tfidf', TfidfTransformer()),
@@ -68,7 +69,12 @@ naive_pipeline.fit(twenty_train.data, twenty_train.target)
 naive_predicted = naive_pipeline.predict(twenty_train.data)
 print("Accuracy score of Naive Bayes:", accuracy_score(twenty_train.target, naive_predicted))
 
-print(metrics.classification_report(twenty_train.target, naive_predicted, target_names=twenty_train.target_names))
+report = classification_report(twenty_test.target, naive_predicted, target_names=twenty_test.target_names)
+
+# Print or display the classification report
+print("Classification Report for Naive Bayes:")
+print(report)
+
 print("------------------------------------------------------")
 
 # Stochastic Gradient Descent Classifier
@@ -80,7 +86,12 @@ sgdc_pipeline.fit(twenty_train.data, twenty_train.target)
 sgdc_predicted = sgdc_pipeline.predict(twenty_train.data)
 print("Accuracy score of SGDC:", accuracy_score(twenty_train.target, sgdc_predicted))
 
-print(metrics.classification_report(twenty_train.target, sgdc_predicted, target_names=twenty_train.target_names))
+report = classification_report(twenty_test.target, sgdc_predicted, target_names=twenty_test.target_names)
+
+# Print or display the classification report
+print("Classification Report for SGDC:")
+print(report)
+# print(metrics.classification_report(twenty_train.target, sgdc_predicted, target_names=twenty_train.target_names))
 print("------------------------------------------------------")
 
 # Decision Tree Classifier
@@ -91,7 +102,12 @@ dtc_pipeline.fit(twenty_train.data, twenty_train.target)
 dtc_predicted = dtc_pipeline.predict(twenty_train.data)
 print("Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
 
-print(metrics.classification_report(twenty_train.target, dtc_predicted, target_names=twenty_train.target_names))
+report = classification_report(twenty_test.target, dtc_predicted, target_names=twenty_test.target_names)
+
+# Print or display the classification report
+print("Classification Report for DTC:")
+print(report)
+# print(metrics.classification_report(twenty_train.target, dtc_predicted, target_names=twenty_train.target_names))
 
 print("------------------------------------------------------")
 
@@ -102,7 +118,6 @@ print("------------------------------------------------------")
 # lowercase=false for seeing the difference
 
 dtc_pipeline = Pipeline([('vect', CountVectorizer(lowercase=True)),
-                         ('tfidf', TfidfTransformer()),
                          ("clf", DecisionTreeClassifier())])
 dtc_pipeline.fit(twenty_train.data, twenty_train.target)
 dtc_predicted = dtc_pipeline.predict(twenty_train.data)
@@ -110,7 +125,6 @@ print("Lowercased Accuracy score of DTC:", accuracy_score(twenty_train.target, d
 
 
 dtc_pipeline = Pipeline([('vect', CountVectorizer(lowercase=False)),
-                         ('tfidf', TfidfTransformer()),
                          ("clf", DecisionTreeClassifier())])
 dtc_pipeline.fit(twenty_train.data, twenty_train.target)
 dtc_predicted = dtc_pipeline.predict(twenty_train.data)
@@ -122,7 +136,6 @@ print("------------------------------------------------------")
 # We are going to use second method
 
 dtc_pipeline = Pipeline([('vect', CountVectorizer(stop_words='english')),
-                         ('tfidf', TfidfTransformer()),
                          ("clf", DecisionTreeClassifier())])
 dtc_pipeline.fit(twenty_train.data, twenty_train.target)
 dtc_predicted = dtc_pipeline.predict(twenty_train.data)
@@ -133,21 +146,18 @@ print("------------------------------------------------------")
 # Ngram_range : We are going to use (1,1) unigram comp. (1,2) unigram and bigram and (1,3) unigram and trigram
 
 dtc_pipeline = Pipeline([('vect', CountVectorizer(analyzer='word', ngram_range=(1, 1))),
-                         ('tfidf', TfidfTransformer()),
                          ("clf", DecisionTreeClassifier())])
 dtc_pipeline.fit(twenty_train.data, twenty_train.target)
 dtc_predicted = dtc_pipeline.predict(twenty_train.data)
 print("'Word' Unigram Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
 
 dtc_pipeline = Pipeline([('vect', CountVectorizer(analyzer='word', ngram_range=(1, 2))),
-                         ('tfidf', TfidfTransformer()),
                          ("clf", DecisionTreeClassifier())])
 dtc_pipeline.fit(twenty_train.data, twenty_train.target)
 dtc_predicted = dtc_pipeline.predict(twenty_train.data)
 print("'Word' Unigram and bigram Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
 
 dtc_pipeline = Pipeline([('vect', CountVectorizer(analyzer='word', ngram_range=(1, 3))),
-                         ('tfidf', TfidfTransformer()),
                          ("clf", DecisionTreeClassifier())])
 dtc_pipeline.fit(twenty_train.data, twenty_train.target)
 dtc_predicted = dtc_pipeline.predict(twenty_train.data)
@@ -155,23 +165,41 @@ print("'Word' Unigram and trigram Accuracy score of DTC:", accuracy_score(twenty
 
 
 dtc_pipeline = Pipeline([('vect', CountVectorizer(analyzer='char', ngram_range=(1, 1))),
-                         ('tfidf', TfidfTransformer()),
                          ("clf", DecisionTreeClassifier())])
 dtc_pipeline.fit(twenty_train.data, twenty_train.target)
 dtc_predicted = dtc_pipeline.predict(twenty_train.data)
 print("'Char' Unigram Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
 
 dtc_pipeline = Pipeline([('vect', CountVectorizer(analyzer='char', ngram_range=(1, 2))),
-                         ('tfidf', TfidfTransformer()),
                          ("clf", DecisionTreeClassifier())])
 dtc_pipeline.fit(twenty_train.data, twenty_train.target)
 dtc_predicted = dtc_pipeline.predict(twenty_train.data)
 print("'Char' Unigram and bigram Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
 
 dtc_pipeline = Pipeline([('vect', CountVectorizer(analyzer='char', ngram_range=(1, 3))),
-                         ('tfidf', TfidfTransformer()),
                          ("clf", DecisionTreeClassifier())])
 dtc_pipeline.fit(twenty_train.data, twenty_train.target)
 dtc_predicted = dtc_pipeline.predict(twenty_train.data)
 print("'Char' Unigram and trigram Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
 
+print("------------------------------------------------------")
+
+# Max_feature : Limits the process to the max feature that has been assigned
+
+dtc_pipeline = Pipeline([('vect', CountVectorizer(max_features=1000)),
+                         ("clf", DecisionTreeClassifier())])
+dtc_pipeline.fit(twenty_train.data, twenty_train.target)
+dtc_predicted = dtc_pipeline.predict(twenty_train.data)
+print("Max features of 1000, Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
+
+dtc_pipeline = Pipeline([('vect', CountVectorizer(max_features=3000)),
+                         ("clf", DecisionTreeClassifier())])
+dtc_pipeline.fit(twenty_train.data, twenty_train.target)
+dtc_predicted = dtc_pipeline.predict(twenty_train.data)
+print("Max features of 3000, Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
+
+dtc_pipeline = Pipeline([('vect', CountVectorizer(max_features=500)),
+                         ("clf", DecisionTreeClassifier())])
+dtc_pipeline.fit(twenty_train.data, twenty_train.target)
+dtc_predicted = dtc_pipeline.predict(twenty_train.data)
+print("Max features of 500, Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
