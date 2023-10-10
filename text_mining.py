@@ -58,13 +58,16 @@ X_test_counts = count_vect.fit_transform(twenty_test.data)
 # X_test_tf = tf_transformer_test.transform(X_test_counts)
 
 print("------------------------------------------------------")
-print("The Classification Algorithms & Their Accuracy Scores:")
+print("The Classification Algorithms & Their Metric Scores:")
 # Naive Bayes
 naive_pipeline = Pipeline([('vect', CountVectorizer()),
                            ('tfidf', TfidfTransformer()),
                            ('clf', MultinomialNB())])
 naive_pipeline.fit(twenty_train.data, twenty_train.target)
 naive_predicted = naive_pipeline.predict(twenty_train.data)
+print("Precision of NAive Bayes:", precision_score(twenty_train.target, naive_predicted, average='weighted'))
+print("Recall of Naive Bayes:", recall_score(twenty_train.target, naive_predicted, average='weighted'))
+print("F1 score of Naive bayes:", f1_score(twenty_train.target, naive_predicted, average='weighted'))
 print("Accuracy score of Naive Bayes:", accuracy_score(twenty_train.target, naive_predicted))
 
 print(metrics.classification_report(twenty_train.target, naive_predicted, target_names=twenty_train.target_names))
@@ -77,6 +80,9 @@ sgdc_pipeline = Pipeline([('vect', CountVectorizer()),
                                                 random_state=42, max_iter=5, tol=None))])
 sgdc_pipeline.fit(twenty_train.data, twenty_train.target)
 sgdc_predicted = sgdc_pipeline.predict(twenty_train.data)
+print("Precision of SGDC:", precision_score(twenty_train.target, sgdc_predicted, average='weighted'))
+print("Recall of SGDC:", recall_score(twenty_train.target, sgdc_predicted, average='weighted'))
+print("F1 score of SGDC:", f1_score(twenty_train.target, sgdc_predicted, average='weighted'))
 print("Accuracy score of SGDC:", accuracy_score(twenty_train.target, sgdc_predicted))
 
 print(metrics.classification_report(twenty_train.target, sgdc_predicted, target_names=twenty_train.target_names))
@@ -88,6 +94,9 @@ dtc_pipeline = Pipeline([('vect', CountVectorizer()),
                          ("clf", DecisionTreeClassifier())])
 dtc_pipeline.fit(twenty_train.data, twenty_train.target)
 dtc_predicted = dtc_pipeline.predict(twenty_train.data)
+print("Precision of DTC:", precision_score(twenty_train.target, dtc_predicted, average='weighted'))
+print("Recall of DTC:", recall_score(twenty_train.target, dtc_predicted, average='weighted'))
+print("F1 score of DTC:", f1_score(twenty_train.target, dtc_predicted, average='weighted'))
 print("Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
 
 print(metrics.classification_report(twenty_train.target, dtc_predicted, target_names=twenty_train.target_names))
@@ -100,52 +109,56 @@ print("------------------------------------------------------")
 # Lowercase : just adding lowercase=True (default) makes the text converted to lowercase. So, let us just add
 # lowercase=false for seeing the difference
 
-dtc_pipeline = Pipeline([('vect', CountVectorizer(lowercase=True)),
-                         ("clf", DecisionTreeClassifier())])
-dtc_pipeline.fit(twenty_train.data, twenty_train.target)
-dtc_predicted = dtc_pipeline.predict(twenty_train.data)
-print("Lowercased Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
+lower_dtc_pipeline = Pipeline([('vect', CountVectorizer(lowercase=True)),
+                               ("clf", DecisionTreeClassifier())])
+lower_dtc_pipeline.fit(twenty_train.data, twenty_train.target)
+lower_dtc_predicted = lower_dtc_pipeline.predict(twenty_train.data)
+print("Lowercased Precision of DTC:", precision_score(twenty_train.target, lower_dtc_predicted, average='weighted'))
+print("Lowercased Recall of DTC:", recall_score(twenty_train.target, lower_dtc_predicted, average='weighted'))
+print("Lowercased F1 score of DTC:", f1_score(twenty_train.target, lower_dtc_predicted, average='weighted'))
+print("Lowercased Accuracy score of DTC:", accuracy_score(twenty_train.target, lower_dtc_predicted))
 
-
-dtc_pipeline = Pipeline([('vect', CountVectorizer(lowercase=False)),
+nlower_dtc_pipeline = Pipeline([('vect', CountVectorizer(lowercase=False)),
                          ("clf", DecisionTreeClassifier())])
-dtc_pipeline.fit(twenty_train.data, twenty_train.target)
-dtc_predicted = dtc_pipeline.predict(twenty_train.data)
-print("Not lowercased Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
+nlower_dtc_pipeline.fit(twenty_train.data, twenty_train.target)
+nlower_dtc_predicted = nlower_dtc_pipeline.predict(twenty_train.data)
+print("Not Lowercased Precision of DTC:", precision_score(twenty_train.target, nlower_dtc_predicted, average='weighted'))
+print("Not Lowercased Recall of DTC:", recall_score(twenty_train.target, nlower_dtc_predicted, average='weighted'))
+print("Not Lowercased F1 score of DTC:", f1_score(twenty_train.target, nlower_dtc_predicted, average='weighted'))
+print("Not lowercased Accuracy score of DTC:", accuracy_score(twenty_train.target, nlower_dtc_predicted))
 
 print("------------------------------------------------------")
 
 # Stop- words : We can either create a list of stop words ourselves or import sklearn's english stop words lib
 # We are going to use second method
 
-dtc_pipeline = Pipeline([('vect', CountVectorizer(stop_words='english')),
+stop_dtc_pipeline = Pipeline([('vect', CountVectorizer(stop_words='english')),
                          ("clf", DecisionTreeClassifier())])
-dtc_pipeline.fit(twenty_train.data, twenty_train.target)
-dtc_predicted = dtc_pipeline.predict(twenty_train.data)
-print("With stop words Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
+stop_dtc_pipeline.fit(twenty_train.data, twenty_train.target)
+stop_dtc_predicted = stop_dtc_pipeline.predict(twenty_train.data)
+print("With stop words Precision of DTC:", precision_score(twenty_train.target, stop_dtc_predicted, average='weighted'))
+print("With stop words Recall of DTC:", recall_score(twenty_train.target, stop_dtc_predicted, average='weighted'))
+print("With stop words F1 score of DTC:", f1_score(twenty_train.target, stop_dtc_predicted, average='weighted'))
+print("With stop words Accuracy score of DTC:", accuracy_score(twenty_train.target, stop_dtc_predicted))
 
 print("------------------------------------------------------")
 
-# Ngram_range : We are going to use (1,1) unigram comp. (1,2) unigram and bigram and (1,3) unigram and trigram
+# Ngram_range : We are going to use (1,1) unigram comp. (1,2) unigram and bigram
 
-dtc_pipeline = Pipeline([('vect', CountVectorizer(analyzer='word', ngram_range=(1, 1))),
+ngram_dtc_pipeline = Pipeline([('vect', CountVectorizer(analyzer='word', ngram_range=(1, 1))),
                          ("clf", DecisionTreeClassifier())])
-dtc_pipeline.fit(twenty_train.data, twenty_train.target)
-dtc_predicted = dtc_pipeline.predict(twenty_train.data)
-print("'Word' Unigram Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
+ngram_dtc_pipeline.fit(twenty_train.data, twenty_train.target)
+ngram_dtc_predicted = ngram_dtc_pipeline.predict(twenty_train.data)
+print("'Word' Unigram Precision of DTC:", precision_score(twenty_train.target, ngram_dtc_predicted, average='weighted'))
+print("'Word' Unigram Recall of DTC:", recall_score(twenty_train.target, ngram_dtc_predicted, average='weighted'))
+print("'Word' Unigram F1 score of DTC:", f1_score(twenty_train.target, ngram_dtc_predicted, average='weighted'))
+print("'Word' Unigram Accuracy score of DTC:", accuracy_score(twenty_train.target, ngram_dtc_predicted))
 
 dtc_pipeline = Pipeline([('vect', CountVectorizer(analyzer='word', ngram_range=(1, 2))),
                          ("clf", DecisionTreeClassifier())])
 dtc_pipeline.fit(twenty_train.data, twenty_train.target)
 dtc_predicted = dtc_pipeline.predict(twenty_train.data)
 print("'Word' Unigram and bigram Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
-
-dtc_pipeline = Pipeline([('vect', CountVectorizer(analyzer='word', ngram_range=(1, 3))),
-                         ("clf", DecisionTreeClassifier())])
-dtc_pipeline.fit(twenty_train.data, twenty_train.target)
-dtc_predicted = dtc_pipeline.predict(twenty_train.data)
-print("'Word' Unigram and trigram Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
-
 
 dtc_pipeline = Pipeline([('vect', CountVectorizer(analyzer='char', ngram_range=(1, 1))),
                          ("clf", DecisionTreeClassifier())])
@@ -158,12 +171,6 @@ dtc_pipeline = Pipeline([('vect', CountVectorizer(analyzer='char', ngram_range=(
 dtc_pipeline.fit(twenty_train.data, twenty_train.target)
 dtc_predicted = dtc_pipeline.predict(twenty_train.data)
 print("'Char' Unigram and bigram Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
-
-dtc_pipeline = Pipeline([('vect', CountVectorizer(analyzer='char', ngram_range=(1, 3))),
-                         ("clf", DecisionTreeClassifier())])
-dtc_pipeline.fit(twenty_train.data, twenty_train.target)
-dtc_predicted = dtc_pipeline.predict(twenty_train.data)
-print("'Char' Unigram and trigram Accuracy score of DTC:", accuracy_score(twenty_train.target, dtc_predicted))
 
 print("------------------------------------------------------")
 
