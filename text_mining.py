@@ -4,11 +4,10 @@ from sklearn.datasets import fetch_20newsgroups  # to import the newsgroup data 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.linear_model import SGDClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score  # to compare tf and tfidf's accuracies
-from sklearn.svm import LinearSVC  # Support vector machines
 from sklearn.pipeline import Pipeline
-from sklearn.linear_model import SGDClassifier
 
 # Tutorial example 4, but in the assignment we are using all 20 as question 1 asked to
 # categories = ['alt.atheism', 'soc.religion.christian', 'comp.graphics', 'sci.med']
@@ -28,7 +27,6 @@ twenty_test = fetch_20newsgroups(subset='test', shuffle=True, random_state=42)
 # Let’s print the first lines of the first loaded file:
 # print("\n".join(twenty_train.data[0].split("\n")[:3]))
 # print(twenty_train.target_names[twenty_train.target[0]])
-#
 # print(twenty_train.target[:10])
 
 # # names of the categories
@@ -51,7 +49,7 @@ X_test_counts = count_vect.fit_transform(twenty_test.data)
 # The index value of a word in the vocabulary is linked to its frequency in the whole training corpus
 
 # Codelet below is the Term Frequency (tf). TF is the frequency of a given word in the text
-# idf is false to disable idf feat.
+# idf is false to disable idf feature
 tf_transformer_train = TfidfTransformer(use_idf=False, norm=None).fit(X_train_counts)
 X_train_tf = tf_transformer_train.transform(X_train_counts)
 
