@@ -18,17 +18,17 @@ from sklearn.pipeline import Pipeline
 twenty_train = fetch_20newsgroups(subset='train', shuffle=True, random_state=42)
 twenty_test = fetch_20newsgroups(subset='test', shuffle=True, random_state=42)
 
-# print(twenty_train.keys())  # we can see the keys of the dictionary
-# print(twenty_test.keys())  # same as above
+print(twenty_train.keys())  # we can see the keys of the dictionary
+print(twenty_test.keys())  # same as above
 
 # twenty_train and twenty_test data are stored as dictionary objects.
 
 # the length of the training data can be shown as:
-# print(len(twenty_train.data))
+print(len(twenty_train.data))
 # Let’s print the first lines of the first loaded file:
-# print("\n".join(twenty_train.data[0].split("\n")[:3]))
-# print(twenty_train.target_names[twenty_train.target[0]])
-# print(twenty_train.target[:10])
+print("\n".join(twenty_train.data[0].split("\n")[:3]))
+print(twenty_train.target_names[twenty_train.target[0]])
+print(twenty_train.target[:10])
 
 # names of the categories
 for t in twenty_train.target[:20]:
@@ -41,8 +41,8 @@ for t in twenty_train.target[:20]:
 count_vect = CountVectorizer()
 X_train_counts = count_vect.fit_transform(twenty_train.data)
 X_test_counts = count_vect.fit_transform(twenty_test.data)
-# print("train counts shape", X_train_counts.shape)
-# print("test counts shape", X_test_counts.shape)
+print("train counts shape", X_train_counts.shape)
+print("test counts shape", X_test_counts.shape)
 
 # CountVectorizer supports counts of N-grams of words or consecutive characters.
 # Once fitted, the vectorizer has built a dictionary of feature indices:
