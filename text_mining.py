@@ -51,8 +51,8 @@ print("test counts shape", X_test_counts.shape)
 
 # Codelet below is the Term Frequency (tf). TF is the frequency of a given word in the text
 # idf is false to disable idf feature
-tf_transformer_train = TfidfTransformer(use_idf=False, norm=None).fit(X_train_counts)
-X_train_tf = tf_transformer_train.transform(X_train_counts)
+# tf_transformer_train = TfidfTransformer(use_idf=False, norm=None).fit(X_train_counts)
+# X_train_tf = tf_transformer_train.transform(X_train_counts)
 
 tf_transformer_test = TfidfTransformer(use_idf=False, norm=None).fit(X_test_counts)
 X_test_tf = tf_transformer_test.transform(X_test_counts)
